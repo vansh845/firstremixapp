@@ -1,17 +1,17 @@
 import { Button } from "./ui/button"
 import { Card, CardHeader } from "./ui/card"
 import { Avatar, AvatarImage } from "./ui/avatar"
-import { useLoaderData } from "@remix-run/react"
+import { Link } from "@remix-run/react"
 
 type proptype = {
-  name:string
-  email:string
-  subject:string
-  img:string
+  name: string
+  email: string
+  subject: string
+  img: string
 }[]
 
 
-export default function Sidebar({data}:{data:proptype}) {
+export default function Sidebar({ data }: { data: proptype }) {
   return (
     <aside className="w-1/4 p-4 bg-gray-100 dark:bg-gray-800 overflow-y-auto">
       <header className="mb-6">
@@ -20,71 +20,60 @@ export default function Sidebar({data}:{data:proptype}) {
       <nav>
         <ul className="space-y-2">
           <li>
-            <Button className="w-full justify-start" variant="ghost">
+            <Link to="/dashboard/index">
+            <Button className="w-full justify-start hover:bg-gray-200 c" variant="ghost">
               <InboxIcon className="w-4 h-4 mr-2" />
               Inbox{"\n                      "}
             </Button>
+            </Link>
           </li>
           <li>
-            <Button className="w-full justify-start" variant="ghost">
+            <Link to="/dashboard/starred">
+            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
               <StarIcon className="w-4 h-4 mr-2" />
               Starred{"\n                      "}
             </Button>
+            </Link>
           </li>
           <li>
-            <Button className="w-full justify-start" variant="ghost">
+            <Link to="/dashboard/sent">
+            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
               <SendIcon className="w-4 h-4 mr-2" />
               Sent{"\n                      "}
             </Button>
+            </Link>
           </li>
           <li>
-            <Button className="w-full justify-start" variant="ghost">
+            <Link to="/dashboard/deleted">
+            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
               <TrashIcon className="w-4 h-4 mr-2" />
               Deleted{"\n                      "}
             </Button>
+            </Link>
           </li>
         </ul>
       </nav>
       <section className="mt-8">
         <h2 className="font-semibold mb-4">Recent Emails</h2>
-        <div className="space-y-2">
+        <div className="space-y-2 flex flex-col">
           {/*  */}
           {data.map((x) => (
-            <Card key={x.name}>
-              <CardHeader>
-                <Avatar>
-                  <AvatarImage className="mr-2" src={x.img} />
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">{x.name}</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{x.subject}</p>
-                </div>
-              </CardHeader>
-            </Card>
+            <button className="hover:scale-95 duration-100">
+              <Card >
+                <CardHeader>
+                  <Avatar>
+                    <AvatarImage src={x.img} />
+                  </Avatar>
+                  <div>
+                    <h3 className="font-semibold">{x.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{x.subject}</p>
+                  </div>
+                </CardHeader>
+              </Card>
+            </button>
           ))}
           {/*  */}
-          {/* <Card>
-            <CardHeader>
-              <Avatar>
-                <AvatarImage className="mr-2" src='' />
-              </Avatar>
-              <div>
-                <h3 className="font-semibold">John Doe</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Hello, how are you?</p>
-              </div>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Avatar>
-                <AvatarImage className="mr-2" src="https://avatars.githubusercontent.com/u/124599?s=80&v=4" />
-              </Avatar>
-              <div>
-                <h3 className="font-semibold">Jane Smith</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Project Update</p>
-              </div>
-            </CardHeader>
-          </Card> */}
+
         </div>
       </section>
     </aside>
