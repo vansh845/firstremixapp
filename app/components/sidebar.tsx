@@ -4,6 +4,7 @@ import { Avatar, AvatarImage } from "./ui/avatar"
 import { Link } from "@remix-run/react"
 import { Input } from "./ui/input"
 import { useSearchParams } from "@remix-run/react"
+import React, { MouseEventHandler, useState } from "react"
 type proptype = {
   name: string
   email: string
@@ -12,53 +13,72 @@ type proptype = {
 }[]
 
 
+
 export default function Sidebar({ data }: { data: proptype }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const params = new URLSearchParams();
+  const [selected, setSelected] = useState('');
+
+  const [styling, setStyling] = useState({
+    inbox: "",
+    sent: "",
+    deleted: "",
+    starred: ""
+  })
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setStyling({
+      inbox: "",
+      sent: "",
+      deleted: "",
+      starred: "",
+      [e.currentTarget.value]: "bg-gray-200"
+    })
+  }
 
   return (
     <aside className="w-1/4 p-4 bg-gray-100 dark:bg-gray-800 overflow-y-auto">
       <header className="mb-6 flex space-x-2">
-        <Input value={searchParams.get('q')!} type="text" placeholder="search" onClick={e=>{params.set('q','');setSearchParams(params)}}  onChange={e=>{
-          setSearchParams((prev)=>{
-            prev.set('q',e.target.value);
+        <Input value={searchParams.get('q') ?? undefined} type="text" placeholder="search" onClick={e => { params.set('q', ''); setSearchParams(params) }} onChange={e => {
+          setSearchParams((prev) => {
+            prev.set('q', e.target.value);
             return prev;
           })
-        }}/>
+        }} />
         <Button >search</Button>
       </header>
       <nav>
         <ul className="space-y-2">
           <li>
-            <Link to="/dashboard/index">
-            <Button className="w-full justify-start hover:bg-gray-200 c" variant="ghost">
-              <InboxIcon className="w-4 h-4 mr-2" />
-              Inbox{"\n                      "}
-            </Button>
+            <Link to="/dashboard/inbox">
+              <Button className={`w-full justify-start hover:bg-gray-200 ${styling.inbox}`} value='inbox' variant="ghost" onClick={handleClick}>
+                <InboxIcon className="w-4 h-4 mr-2" />
+                Inbox{"\n                      "}
+              </Button>
             </Link>
           </li>
           <li>
             <Link to="/dashboard/starred">
-            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
-              <StarIcon className="w-4 h-4 mr-2" />
-              Starred{"\n                      "}
-            </Button>
+              <Button className={`w-full justify-start hover:bg-gray-200 ${styling.starred}`} value='starred' variant="ghost" onClick={handleClick}>
+                <StarIcon className="w-4 h-4 mr-2" />
+                Starred{"\n                      "}
+              </Button>
             </Link>
           </li>
           <li>
             <Link to="/dashboard/sent">
-            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
-              <SendIcon className="w-4 h-4 mr-2" />
-              Sent{"\n                      "}
-            </Button>
+              <Button className={`w-full justify-start hover:bg-gray-200 ${styling.sent}`} value='sent' variant="ghost" onClick={handleClick}>
+                <SendIcon className="w-4 h-4 mr-2" />
+                Sent{"\n                      "}
+              </Button>
             </Link>
           </li>
           <li>
             <Link to="/dashboard/deleted">
-            <Button className="w-full justify-start hover:bg-gray-200" variant="ghost">
-              <TrashIcon className="w-4 h-4 mr-2" />
-              Deleted{"\n                      "}
-            </Button>
+              <Button className={`w-full justify-start hover:bg-gray-200 ${styling.deleted}`} value='deleted' variant="ghost" onClick={handleClick}>
+                <TrashIcon className="w-4 h-4 mr-2" />
+                Deleted{"\n                      "}
+              </Button>
             </Link>
           </li>
         </ul>
@@ -67,8 +87,8 @@ export default function Sidebar({ data }: { data: proptype }) {
         <h2 className="font-semibold mb-4">Recent Emails</h2>
         <div className="space-y-2 flex flex-col">
           {/*  */}
-          {data.map((x) => (
-            <button className="hover:shadow-md hover:rounded-xl duration-300">
+          {data.map((x, i) => (
+            <button key={i} className="hover:shadow-md hover:rounded-xl duration-300">
               <Card >
                 <CardHeader>
                   <Avatar>

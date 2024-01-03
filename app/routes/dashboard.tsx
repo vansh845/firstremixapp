@@ -31,26 +31,6 @@ export default function Component() {
 
     <main className="flex h-screen">
       <Sidebar data={arr} />
-      {/* <section className="w-3/4 p-4 overflow-y-auto">
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold">Email Content</h1>
-        </header>
-        <Card className="p-4">
-          <CardHeader className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-bold">Hello, how are you?</h2>
-              <p className="text-gray-500 dark:text-gray-400">{`John Doe <john.doe@example.com>`}</p>
-            </div>
-            <Badge>Unread</Badge>
-          </CardHeader>
-          <CardContent className="mt-4">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac nisl velit. Sed in sagittis purus.
-              Cras hendrerit, massa nec aliquet efficitur, nunc ipsum tincidunt dolor, id eleifend justo neque a augue.
-            </p>
-          </CardContent>
-        </Card>
-      </section> */}
       <Outlet />
     </main>
   )
